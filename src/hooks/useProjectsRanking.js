@@ -22,9 +22,22 @@ export function useProjectsRanking({ onRateLimit, onNetworkError, onNotFound } =
 
   const { snapshot, connectionState } = useSSE(`${API_BASE_URL}/api/stream`);
 
+  const applyServerScores = useCallback((updates) => {
+    setServerScores((prev) => {
+      const next = { ...prev };
+      for (const [id, score] of Object.entries(updates)) {
+        const numeric = Number(score);
+        if (Number.isFinite(numeric)) {
+          next[id] = Math.max(next[id] ?? 0, numeric);
+        }
+      }
+      return next;
+    });
+  }, []);
+
   useEffect(() => {
-    setServerScores((prev) => ({ ...prev, ...snapshot }));
-  }, [snapshot]);
+    applyServerScores(snapshot);
+  }, [snapshot, applyServerScores]);
 
   const load = useCallback(() => {
     let cancelled = false;
@@ -67,7 +80,11 @@ export function useProjectsRanking({ onRateLimit, onNetworkError, onNotFound } =
       setFlushing((prev) => ({ ...prev, [projectId]: true }));
 
       try {
-        await sendLikeBatch(projectId, toSend);
+        const result = await sendLikeBatch(projectId, toSend);
+        const score = Number(result?.score);
+        if (Number.isFinite(score)) {
+          applyServerScores({ [projectId]: score });
+        }
         const current = pendingRef.current[projectId] ?? 0;
         const remainder = Math.max(0, current - toSend);
         pendingRef.current = { ...pendingRef.current, [projectId]: remainder };
@@ -92,7 +109,7 @@ export function useProjectsRanking({ onRateLimit, onNetworkError, onNotFound } =
         setFlushing((prev) => ({ ...prev, [projectId]: false }));
       }
     },
-    [onRateLimit, onNetworkError, onNotFound]
+    [onRateLimit, onNetworkError, onNotFound, applyServerScores]
   );
 
   const scheduleFlush = useCallback(
