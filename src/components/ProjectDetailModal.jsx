@@ -77,6 +77,7 @@ export default function ProjectDetailModal({ project, onClose, onLike }) {
                       count={project.displayScore ?? project.likes_count ?? 0}
                       active={(project.pending ?? 0) > 0}
                       flushing={project.flushing}
+                      liked={project.liked}
                       onLike={() => onLike(project.id)}
                     />
                     {project.website_url && (

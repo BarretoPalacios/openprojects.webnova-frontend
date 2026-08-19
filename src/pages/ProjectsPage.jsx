@@ -145,6 +145,7 @@ export default function ProjectsPage() {
                   score={score?.displayScore ?? project.likes_count ?? 0}
                   pending={score?.pending ?? 0}
                   flushing={score?.flushing ?? false}
+                  liked={score?.liked ?? false}
                   onOpen={openProject}
                   onLike={like}
                 />
@@ -163,6 +164,7 @@ export default function ProjectsPage() {
             displayScore: selectedScore?.displayScore ?? selectedItem.likes_count ?? 0,
             pending: selectedScore?.pending ?? 0,
             flushing: selectedScore?.flushing ?? false,
+            liked: selectedScore?.liked ?? false,
           }}
           onClose={() => setSelectedId(null)}
           onLike={like}

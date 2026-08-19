@@ -7,6 +7,16 @@ import { useSSE } from "./useSSE";
 const FLUSH_DEBOUNCE_MS = 800;
 const MAX_BATCH = 50;
 const RETRY_MS = 2000;
+const LIKED_STORAGE_KEY = "webnova_liked_projects";
+
+function loadLikedProjects() {
+  try {
+    const raw = localStorage.getItem(LIKED_STORAGE_KEY);
+    return raw ? new Set(JSON.parse(raw)) : new Set();
+  } catch {
+    return new Set();
+  }
+}
 
 export function useProjectsRanking({ onRateLimit, onNetworkError, onNotFound } = {}) {
   const [projects, setProjects] = useState([]);
@@ -15,6 +25,7 @@ export function useProjectsRanking({ onRateLimit, onNetworkError, onNotFound } =
   const [serverScores, setServerScores] = useState({});
   const [pendingClicks, setPendingClicks] = useState({});
   const [flushing, setFlushing] = useState({});
+  const [liked, setLiked] = useState(loadLikedProjects);
 
   const pendingRef = useRef({});
   const timersRef = useRef({});
@@ -85,11 +96,11 @@ export function useProjectsRanking({ onRateLimit, onNetworkError, onNotFound } =
         if (Number.isFinite(score)) {
           applyServerScores({ [projectId]: score });
         }
-        const current = pendingRef.current[projectId] ?? 0;
-        const remainder = Math.max(0, current - toSend);
-        pendingRef.current = { ...pendingRef.current, [projectId]: remainder };
+        if (typeof result?.liked === "boolean") {
+          markLiked(projectId);
+        }
+        pendingRef.current = { ...pendingRef.current, [projectId]: 0 };
         setPendingClicks({ ...pendingRef.current });
-        if (remainder > 0) scheduleFlush(projectId);
       } catch (err) {
         if (err?.status === 429) {
           if (onRateLimit) onRateLimit(projectId);
@@ -109,7 +120,7 @@ export function useProjectsRanking({ onRateLimit, onNetworkError, onNotFound } =
         setFlushing((prev) => ({ ...prev, [projectId]: false }));
       }
     },
-    [onRateLimit, onNetworkError, onNotFound, applyServerScores]
+    [onRateLimit, onNetworkError, onNotFound, applyServerScores, markLiked]
   );
 
   const scheduleFlush = useCallback(
@@ -122,13 +133,27 @@ export function useProjectsRanking({ onRateLimit, onNetworkError, onNotFound } =
 
   const like = useCallback(
     (projectId) => {
-      const next = { ...pendingRef.current, [projectId]: (pendingRef.current[projectId] ?? 0) + 1 };
+      if (liked.has(projectId)) return;
+      if ((pendingRef.current[projectId] ?? 0) > 0) return;
+      const next = { ...pendingRef.current, [projectId]: 1 };
       pendingRef.current = next;
       setPendingClicks(next);
       scheduleFlush(projectId);
     },
-    [scheduleFlush]
+    [liked, scheduleFlush]
   );
+
+  const markLiked = useCallback((projectId) => {
+    setLiked((prev) => {
+      if (prev.has(projectId)) return prev;
+      const next = new Set(prev);
+      next.add(projectId);
+      try {
+        localStorage.setItem(LIKED_STORAGE_KEY, JSON.stringify([...next]));
+      } catch {}
+      return next;
+    });
+  }, []);
 
   useEffect(
     () => () => {
@@ -148,10 +173,11 @@ export function useProjectsRanking({ onRateLimit, onNetworkError, onNotFound } =
         pending,
         displayScore: serverScore + pending,
         flushing: Boolean(flushing[project.id]),
+        liked: liked.has(project.id),
       };
     });
     return out;
-  }, [projects, serverScores, pendingClicks, flushing]);
+  }, [projects, serverScores, pendingClicks, flushing, liked]);
 
-  return { projects, scores, loading, loadError, reload: load, refresh, like, connectionState };
+  return { projects, scores, liked, loading, loadError, reload: load, refresh, like, connectionState };
 }

@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Heart } from "lucide-react";
 
-export default function LikeButton({ count, active, flushing, onLike }) {
+export default function LikeButton({ count, active, flushing, liked, onLike }) {
   const [pop, setPop] = useState(false);
+  const isLiked = Boolean(active || liked);
+  const disabled = flushing || liked;
 
   function handleClick() {
     setPop(true);
@@ -13,14 +15,15 @@ export default function LikeButton({ count, active, flushing, onLike }) {
   return (
     <button
       type="button"
-      className={`vote-btn ${active ? "active" : ""} ${pop ? "vote-pop" : ""}`}
+      className={`vote-btn ${isLiked ? "active" : ""} ${pop ? "vote-pop" : ""}`}
       onClick={handleClick}
-      disabled={flushing}
-      aria-label="Votar por este proyecto"
+      disabled={disabled}
+      aria-label={liked ? "Ya votaste por este proyecto" : "Votar por este proyecto"}
+      title={liked ? "Ya votaste por este proyecto" : undefined}
     >
-      <Heart fill={active ? "currentColor" : "none"} />
+      <Heart fill={isLiked ? "currentColor" : "none"} />
       <span className="vote-count">{count}</span>
-      <span>Me gusta</span>
+      <span>{liked ? "Votado" : "Me gusta"}</span>
       {flushing && <span className="spinner" />}
     </button>
   );

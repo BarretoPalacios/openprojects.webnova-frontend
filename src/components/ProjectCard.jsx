@@ -4,7 +4,7 @@ import CategoryBadge from "./CategoryBadge";
 import SocialIcon from "./SocialIcon";
 import LikeButton from "./LikeButton";
 
-function ProjectCard({ project, rank, score, pending, flushing, onOpen, onLike }) {
+function ProjectCard({ project, rank, score, pending, flushing, liked, onOpen, onLike }) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -112,6 +112,7 @@ function ProjectCard({ project, rank, score, pending, flushing, onOpen, onLike }
             count={score}
             active={pending > 0}
             flushing={flushing}
+            liked={liked}
             onLike={() => onLike(project.id)}
           />
         </div>
