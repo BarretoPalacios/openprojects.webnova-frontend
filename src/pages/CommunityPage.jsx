@@ -8,7 +8,7 @@ const STEPS = [
     body: "Sigue cualquiera de mis redes (TikTok, Facebook o Instagram) y súmate al espacio de la comunidad que se enlaza en la bio.",
   },
   {
-    title: "Recibe tu token personal",
+    title: "Recibe tu token ",
     body: "Cada miembro recibe un token único que lo identifica como parte de la comunidad de Webnova. No se comparte ni se revende.",
   },
   {
@@ -26,9 +26,9 @@ const STEPS = [
 ];
 
 const SOCIALS = [
-  { name: "tiktok", label: "TikTok", handle: "@webnova.dev", href: "https://www.tiktok.com" },
-  { name: "facebook", label: "Facebook", handle: "/webnova.dev", href: "https://www.facebook.com" },
-  { name: "instagram", label: "Instagram", handle: "@webnova.dev", href: "https://www.instagram.com" },
+  { name: "tiktok", label: "TikTok", handle: "@webn0va", href: "https://www.tiktok.com/@webn0va" },
+  { name: "facebook", label: "Facebook", handle: "/webnova", href: "https://www.facebook.com/profile.php?id=61570750662082" },
+  { name: "instagram", label: "Instagram", handle: "@webnova.pe", href: "https://www.instagram.com/webnova.pe/" },
 ];
 
 const PROFILE_ROWS = [
@@ -37,7 +37,7 @@ const PROFILE_ROWS = [
     "ocupación",
     "Desarrollador full-stack independiente. Diseño y construyo productos digitales de principio a fin: interfaz, lógica de negocio y despliegue.",
   ],
-  ["enfoque", "Herramientas para developers, comunidades de software y proyectos open source."],
+  ["enfoque", "Desarrollo a medida end to end, comunidades de software y proyectos open source."],
   [
     "filosofía",
     "Construir en público, documentar el proceso y compartirlo en video para que otros creadores encuentren su propio camino.",
@@ -63,8 +63,8 @@ export default function CommunityPage() {
 
       <section className="section" style={{ paddingTop: 20 }}>
         <div className="profile-grid">
-          <div>
-            <div className="avatar-box">WN</div>
+          <div className="bg-white term">
+            <img src="logo.png"/>
           </div>
           <div className="term">
             <div className="term-bar">
@@ -83,10 +83,8 @@ export default function CommunityPage() {
                 </div>
               ))}
               <p style={{ marginTop: 18, opacity: 0.85, fontSize: ".9rem" }}>
-                Creé Webnova porque quería un espacio simple, honesto y sin fricción donde cualquier persona pudiera
-                mostrar lo que construyó — sin algoritmos que ocultan proyectos pequeños y sin muros de registro. Todo el
-                contenido que comparto en redes documenta ese proceso: cómo se diseña, cómo se programa y cómo se
-                sostiene un producto real.
+                Creé Openprojects Webnova porque quería un espacio simple, honesto y sin fricción donde cualquier persona que apoya mis videos y se encuentra en la comunidad pudiera
+                mostrar lo que construyó y dar un posible impulso a su proyecto ojo sin fines de lucro pero si gustas donarme , jeje doname !
               </p>
             </div>
           </div>
@@ -118,7 +116,7 @@ export default function CommunityPage() {
           Cómo obtener tu token de comunidad
         </h2>
         <p className="section-sub" style={{ marginBottom: 30, maxWidth: 680 }}>
-          Publicar en Webnova ya no requiere Pull Requests: se hace con un formulario. Pero para mantener el directorio
+          Publicar en Openprojects Webnova se hace con un formulario. Pero para mantener el directorio
           con proyectos reales y evitar spam, publicar está reservado a quienes pertenecen a la comunidad y tienen un
           token válido.
         </p>
