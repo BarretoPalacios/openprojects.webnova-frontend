@@ -72,7 +72,7 @@ export default function ProjectDetailModal({ project, onClose, onLike }) {
                   <CategoryBadge category={project.category} />
                 </div>
                 {onLike && (
-                  <div style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "center" }}>
+                  <div className="detail-actions">
                     <LikeButton
                       count={project.displayScore ?? project.likes_count ?? 0}
                       active={(project.pending ?? 0) > 0}

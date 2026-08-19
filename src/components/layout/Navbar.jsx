@@ -16,7 +16,7 @@ export default function Navbar() {
     <header className="nav-wnv">
       <div className="nav-inner">
         <Link to="/" className="nav-logo">
-          WEBNOVA<span className="nav-cursor" />
+          OPENPROJECTS.WEBNOVA<span className="nav-cursor" />
         </Link>
         <button type="button" className="btn-mobile-toggle" onClick={() => setOpen((o) => !o)}>
           <Menu />

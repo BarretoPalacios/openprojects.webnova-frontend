@@ -380,7 +380,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
   gap: 22px;
 }
 
@@ -1029,8 +1029,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 
 .detail-head {
   display: flex;
+  flex-wrap: wrap;
   gap: 22px;
   align-items: flex-start;
+}
+
+.detail-head > * {
+  min-width: 0;
 }
 
 .detail-icon {
@@ -1050,9 +1055,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 
 .detail-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 180px), 1fr));
   gap: 12px;
   margin-bottom: 10px;
+}
+
+.detail-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
 }
 
 .gallery-item {
@@ -1378,7 +1390,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
    ========================================================================== */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
   gap: 20px;
   max-width: 1280px;
   margin: 0 auto;
@@ -1433,6 +1445,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-width: 0;
+}
+
+.term-body {
+  min-width: 0;
 }
 
 .card-rank {
@@ -1616,6 +1633,41 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   gap: 24px;
   align-items: center;
   justify-content: space-between;
+}
+
+/* ==========================================================================
+   RESPONSIVE (detail modal + floating donate)
+   ========================================================================== */
+@media (max-width: 640px) {
+  .detail-head {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .detail-icon {
+    width: 64px;
+    height: 64px;
+  }
+
+  .detail-actions {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .detail-actions .btn-sm {
+    justify-content: center;
+  }
+
+  .modal-overlay {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .donate-qr {
+    width: 160px;
+    height: 160px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
