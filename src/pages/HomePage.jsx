@@ -45,7 +45,7 @@ function StatValue({ value, duration = 900 }) {
   return formatNumber(display);
 }
 
-function StatBox({ cmd, label, value, live }) {
+function StatBox({ cmd, path, label, value, live }) {
   return (
     <div className="term">
       <div className="term-bar">
@@ -54,7 +54,7 @@ function StatBox({ cmd, label, value, live }) {
           <span className="term-dot" />
           <span className="term-dot" />
         </div>
-        <span className="term-path">{cmd}.sh</span>
+        <span className="term-path">{path}.sh</span>
       </div>
       <div className="term-body">
         <div className="stat-cmd">$ {cmd}</div>
@@ -136,12 +136,19 @@ export default function HomePage() {
         <div className="stats-grid">
           <StatBox
             cmd="curl /api/projects | jq '.[].likes_count' | sum"
+            path="~/stats/likes.total"
             label="Likes emitidos en total"
             value={stats.totalLikes}
           />
-          <StatBox cmd="curl /api/projects | jq 'length'" label="Proyectos publicados" value={stats.totalProjects} />
+          <StatBox
+            cmd="curl /api/projects | jq 'length'"
+            path="~/stats/projects.len"
+            label="Proyectos publicados"
+            value={stats.totalProjects}
+          />
           <StatBox
             cmd="curl /api/projects | jq '[.[].category] | unique | length'"
+            path="~/stats/categories.uniq"
             label="Categorías activas"
             value={stats.totalCategories}
           />

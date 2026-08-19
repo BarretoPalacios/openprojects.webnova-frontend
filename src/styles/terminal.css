@@ -282,6 +282,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   text-overflow: ellipsis;
   white-space: nowrap;
   letter-spacing: .02em;
+  min-width: 0;
 }
 
 .term-body {
@@ -1425,6 +1426,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   opacity: .55;
   margin-bottom: 10px;
   letter-spacing: .02em;
+  overflow-wrap: anywhere;
 }
 
 /* ==========================================================================
@@ -1660,6 +1662,30 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 
   .modal-overlay {
     padding: 12px;
+  }
+
+  .donate-fab {
+    right: 16px;
+    bottom: 16px;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    justify-content: center;
+    box-shadow: 3px 3px 0 0 var(--white);
+  }
+
+  .donate-fab:hover {
+    box-shadow: 5px 5px 0 0 var(--white);
+  }
+
+  .donate-fab span {
+    display: none;
+  }
+
+  .toast-container {
+    right: 16px;
+    bottom: auto;
+    top: 84px;
   }
 }
 
