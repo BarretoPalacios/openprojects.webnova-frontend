@@ -72,7 +72,7 @@ export default function HomePage() {
   const [selectedId, setSelectedId] = useState(null);
   const typed = useTypewriter(TYPED_LINES);
 
-  const { projects, scores, loading, loadError, reload, refresh, like, connectionState } = useProjectsRanking({
+  const { projects, scores, loading, loadError, reload, refresh, like } = useProjectsRanking({
     onRateLimit: () => showToast("Vas muy rápido, espera un momento.", "error"),
     onNetworkError: () => showToast("Sin conexión, reintentando…", "error"),
     onNotFound: () => {

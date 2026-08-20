@@ -31,7 +31,7 @@ export function useProjectsRanking({ onRateLimit, onNetworkError, onNotFound } =
   const timersRef = useRef({});
   const retryTimersRef = useRef({});
 
-  const { snapshot, connectionState } = useSSE(`${API_BASE_URL}/api/stream`);
+  const { snapshot } = useSSE(`${API_BASE_URL}/api/stream`);
 
   const applyServerScores = useCallback((updates) => {
     setServerScores((prev) => {
@@ -78,6 +78,18 @@ export function useProjectsRanking({ onRateLimit, onNetworkError, onNotFound } =
     return () => {
       cancelled = true;
     };
+  }, []);
+
+  const markLiked = useCallback((projectId) => {
+    setLiked((prev) => {
+      if (prev.has(projectId)) return prev;
+      const next = new Set(prev);
+      next.add(projectId);
+      try {
+        localStorage.setItem(LIKED_STORAGE_KEY, JSON.stringify([...next]));
+      } catch {}
+      return next;
+    });
   }, []);
 
   useEffect(() => load(), [load]);
@@ -143,18 +155,6 @@ export function useProjectsRanking({ onRateLimit, onNetworkError, onNotFound } =
     [liked, scheduleFlush]
   );
 
-  const markLiked = useCallback((projectId) => {
-    setLiked((prev) => {
-      if (prev.has(projectId)) return prev;
-      const next = new Set(prev);
-      next.add(projectId);
-      try {
-        localStorage.setItem(LIKED_STORAGE_KEY, JSON.stringify([...next]));
-      } catch {}
-      return next;
-    });
-  }, []);
-
   useEffect(
     () => () => {
       Object.values(timersRef.current).forEach(clearTimeout);
@@ -179,5 +179,5 @@ export function useProjectsRanking({ onRateLimit, onNetworkError, onNotFound } =
     return out;
   }, [projects, serverScores, pendingClicks, flushing, liked]);
 
-  return { projects, scores, liked, loading, loadError, reload: load, refresh, like, connectionState };
+  return { projects, scores, liked, loading, loadError, reload: load, refresh, like };
 }

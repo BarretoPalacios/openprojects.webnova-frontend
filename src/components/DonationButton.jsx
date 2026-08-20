@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Coffee, X } from "lucide-react";
-import qrDonacion from "../assets/qr-donacion.svg";
 import SVGComponent from "./SVGComponent";
 
 export default function DonationButton() {

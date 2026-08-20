@@ -6,8 +6,6 @@ export const ALLOWED_EXTENSIONS = ["jpg", "jpeg", "png", "webp", "gif"];
 
 export const MAX_FILE_SIZE_MB = 5;
 
-export const MAX_IMAGES = 4;
-
 const URL_RE = /^https?:\/\/[^\s]+$/i;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
